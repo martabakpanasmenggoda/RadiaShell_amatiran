@@ -4,208 +4,542 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>RadiaShell — Smart Green Biorefinery Platform</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Fraunces:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet"/>
 <style>
-:root {
-  --teal-deep:   #0a2a2f;
-  --teal-dark:   #0d3b44;
-  --teal-mid:    #1a6b7a;
-  --teal-bright: #2ab4cc;
-  --teal-light:  #7fd8e8;
-  --teal-pale:   #cdf4fc;
-  --green-leaf:  #4fcc56;
-  --green-mid:   #2e9e35;
-  --amber:       #f0c040;
-  --white:       #ffffff;
-  --text-primary:#e8f7fa;
-  --text-mid:    #9ecdd8;
-  --text-muted:  #5a8f9a;
-  --border:      rgba(42,180,204,0.18);
-  --card-bg:     rgba(13,59,68,0.6);
-  --card-border: rgba(42,180,204,0.2);
+:root{
+  --teal:#1a8fa0;
+  --teal-dark:#0e6070;
+  --teal-light:#5ecfdf;
+  --teal-pale:#e0f7fa;
+  --green:#2ecc71;
+  --green-dark:#1a9e50;
+  --amber:#f9c74f;
+  --coral:#ff6b6b;
+  --white:#fff;
+  --dark:#0a1628;
+  --dark2:#0f2035;
+  --card:#ffffff;
+  --text:#1a2a3a;
+  --text2:#4a6070;
+  --text3:#7a9aaa;
+  --border:rgba(30,143,160,0.15);
+  --shadow:0 8px 32px rgba(26,143,160,0.12);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--teal-deep);color:var(--text-primary);overflow-x:hidden}
-::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:var(--teal-deep)}
-::-webkit-scrollbar-thumb{background:var(--teal-mid);border-radius:3px}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#f0fafb;color:var(--text);overflow-x:hidden}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--teal);border-radius:3px}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:14px 48px;background:rgba(10,42,47,0.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+/* ── FLOATING BUBBLES ── */
+.bubbles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
+.bubble{
+  position:absolute;bottom:-60px;
+  border-radius:50%;
+  animation:rise linear infinite;
+  opacity:0;
+}
+@keyframes rise{
+  0%{transform:translateY(0) scale(1);opacity:0}
+  10%{opacity:.6}
+  90%{opacity:.3}
+  100%{transform:translateY(-110vh) scale(1.2);opacity:0}
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 48px;
+  background:rgba(255,255,255,0.92);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  box-shadow:0 2px 20px rgba(26,143,160,0.08);
+}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo img{height:38px;width:auto;filter:drop-shadow(0 0 8px rgba(42,180,204,0.35))}
-.nav-logo-text{font-family:'Syne',sans-serif;font-size:19px;font-weight:700;color:var(--teal-light);letter-spacing:.5px}
+.nav-logo img{height:36px;width:auto}
+.nav-logo-text{font-family:'Fraunces',serif;font-size:20px;font-weight:900;color:var(--teal-dark);letter-spacing:-.3px}
 .nav-links{display:flex;gap:28px;list-style:none}
-.nav-links a{text-decoration:none;font-size:14px;font-weight:500;color:var(--text-mid);transition:color .2s}
-.nav-links a:hover{color:var(--teal-light)}
-.nav-cta{background:linear-gradient(135deg,var(--teal-mid),var(--teal-bright));color:white;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;box-shadow:0 4px 16px rgba(42,180,204,0.3);transition:opacity .2s}
-.nav-cta:hover{opacity:.85}
+.nav-links a{text-decoration:none;font-size:14px;font-weight:600;color:var(--text2);transition:color .2s}
+.nav-links a:hover{color:var(--teal)}
+.nav-cta{
+  background:linear-gradient(135deg,var(--teal-dark),var(--teal));
+  color:white;padding:10px 22px;border-radius:10px;
+  font-size:14px;font-weight:700;text-decoration:none;
+  box-shadow:0 4px 16px rgba(26,143,160,0.3);transition:all .2s;
+}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(26,143,160,0.4)}
 
-/* HERO */
-.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 48px 80px;overflow:hidden}
+/* ── HERO ── */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;overflow:hidden;
+  padding:100px 24px 60px;
+}
 .hero-video-wrap{position:absolute;inset:0;z-index:0}
-.hero-video-wrap video{width:100%;height:100%;object-fit:cover;opacity:.22}
-.hero-video-wrap::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,42,47,0.94) 0%,rgba(10,42,47,0.75) 55%,rgba(10,42,47,0.9) 100%)}
-.hero-content{position:relative;z-index:1;max-width:700px}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(42,180,204,0.1);color:var(--teal-light);padding:7px 16px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:28px;border:1px solid rgba(42,180,204,0.28);backdrop-filter:blur(8px)}
-.badge-dot{width:7px;height:7px;background:var(--teal-bright);border-radius:50%;animation:pulse 2s infinite;box-shadow:0 0 8px var(--teal-bright)}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
-.hero h1{font-family:'Syne',sans-serif;font-size:clamp(40px,5.5vw,70px);font-weight:800;line-height:1.05;color:var(--white);margin-bottom:24px;letter-spacing:-1px}
-.hero h1 .accent{background:linear-gradient(90deg,var(--teal-bright),var(--green-leaf));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero p{font-size:17px;line-height:1.75;color:var(--text-mid);margin-bottom:40px;max-width:540px}
-.hero-btns{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:52px}
-.btn-primary{background:linear-gradient(135deg,var(--teal-mid),var(--teal-bright));color:white;padding:14px 28px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;transition:all .2s;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 8px 28px rgba(42,180,204,0.32)}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(42,180,204,0.42)}
-.btn-sec{background:rgba(42,180,204,0.08);color:var(--teal-light);padding:14px 28px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;border:1.5px solid rgba(42,180,204,0.32);transition:all .2s;display:inline-flex;align-items:center;gap:8px;backdrop-filter:blur(8px)}
-.btn-sec:hover{background:rgba(42,180,204,0.15);transform:translateY(-2px)}
-.hero-stats{display:flex;gap:40px;flex-wrap:wrap;padding-top:32px;border-top:1px solid var(--border)}
-.stat-item{display:flex;flex-direction:column;gap:4px}
-.stat-num{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;background:linear-gradient(90deg,var(--teal-light),var(--green-leaf));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.stat-lbl{font-size:11px;color:var(--text-muted);font-weight:500;text-transform:uppercase;letter-spacing:.8px}
+.hero-video-wrap video{width:100%;height:100%;object-fit:cover}
+.hero-overlay{
+  position:absolute;inset:0;z-index:1;
+  background:linear-gradient(
+    to bottom,
+    rgba(10,22,40,0.45) 0%,
+    rgba(10,22,40,0.25) 40%,
+    rgba(10,22,40,0.65) 100%
+  );
+}
+.hero-content{position:relative;z-index:2;max-width:780px}
+.hero-eyebrow{
+  display:inline-block;
+  background:rgba(255,255,255,0.18);
+  backdrop-filter:blur(10px);
+  color:white;
+  padding:7px 18px;border-radius:999px;
+  font-size:13px;font-weight:700;
+  border:1px solid rgba(255,255,255,0.35);
+  margin-bottom:24px;letter-spacing:.5px;
+}
+.hero h1{
+  font-family:'Fraunces',serif;
+  font-size:clamp(44px,7vw,84px);
+  font-weight:900;line-height:1.0;
+  color:white;margin-bottom:20px;
+  text-shadow:0 4px 24px rgba(0,0,0,0.3);
+  letter-spacing:-2px;
+}
+.hero h1 em{
+  font-style:italic;
+  background:linear-gradient(90deg,#7fffd4,#40e0d0);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{
+  font-size:18px;line-height:1.7;
+  color:rgba(255,255,255,0.82);
+  margin-bottom:36px;max-width:580px;margin-left:auto;margin-right:auto;
+}
+.hero-hook{
+  display:inline-block;
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,0.25);
+  border-radius:14px;
+  padding:14px 28px;
+  color:white;font-size:15px;font-weight:600;
+  margin-bottom:32px;
+  line-height:1.5;
+}
+.hero-hook strong{color:#7fffd4}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+.btn-hero-primary{
+  background:linear-gradient(135deg,#1a8fa0,#2ab4cc);
+  color:white;padding:15px 30px;border-radius:12px;
+  font-size:15px;font-weight:700;text-decoration:none;
+  border:none;cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;
+  box-shadow:0 8px 28px rgba(42,180,204,0.4);
+  transition:all .25s;
+}
+.btn-hero-primary:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(42,180,204,0.5)}
+.btn-hero-sec{
+  background:rgba(255,255,255,0.15);
+  backdrop-filter:blur(10px);
+  color:white;padding:15px 30px;border-radius:12px;
+  font-size:15px;font-weight:700;text-decoration:none;
+  border:1.5px solid rgba(255,255,255,0.4);
+  display:inline-flex;align-items:center;gap:8px;
+  transition:all .25s;
+}
+.btn-hero-sec:hover{background:rgba(255,255,255,0.25);transform:translateY(-3px)}
+.hero-stats{
+  display:flex;gap:0;
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:16px;overflow:hidden;
+  width:fit-content;margin:0 auto;
+}
+.hstat{
+  padding:16px 28px;text-align:center;
+  border-right:1px solid rgba(255,255,255,0.15);
+}
+.hstat:last-child{border-right:none}
+.hstat-num{font-family:'Fraunces',serif;font-size:26px;font-weight:900;color:white}
+.hstat-lbl{font-size:11px;color:rgba(255,255,255,0.6);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
 
-/* SECTIONS */
-section{padding:96px 48px}
-.sec-lbl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:var(--teal-bright);margin-bottom:12px}
-.sec-title{font-family:'Syne',sans-serif;font-size:clamp(26px,3.5vw,42px);font-weight:800;color:var(--white);line-height:1.15;margin-bottom:16px;letter-spacing:-.5px}
-.sec-sub{font-size:16px;color:var(--text-mid);line-height:1.75;max-width:560px}
+/* ── SELL DASHBOARD ── */
+#sell{
+  background:linear-gradient(160deg,#e8f9fc 0%,#f0f9f0 50%,#fefce8 100%);
+  padding:96px 48px;position:relative;overflow:hidden;
+}
+#sell::before{
+  content:'🐚';position:absolute;font-size:300px;
+  right:-60px;top:-60px;opacity:.04;transform:rotate(20deg);
+  pointer-events:none;
+}
+.sell-hero-text{text-align:center;margin-bottom:56px}
+.sell-hook-big{
+  font-family:'Fraunces',serif;
+  font-size:clamp(28px,4vw,48px);
+  font-weight:900;color:var(--teal-dark);
+  line-height:1.15;margin-bottom:12px;letter-spacing:-.5px;
+}
+.sell-hook-big em{font-style:italic;color:var(--green-dark)}
+.sell-hook-sub{font-size:16px;color:var(--text2);max-width:540px;margin:0 auto;line-height:1.7}
+/* Shell carousel */
+.shell-carousel{
+  position:relative;margin:0 auto 56px;max-width:900px;
+  background:white;border-radius:24px;
+  box-shadow:0 16px 56px rgba(26,143,160,0.1);
+  border:1px solid var(--border);overflow:hidden;
+}
+.carousel-track{display:flex;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.shell-slide{
+  min-width:100%;display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;gap:0;
+}
+.shell-img-wrap{
+  height:320px;overflow:hidden;
+  background:linear-gradient(135deg,#e0f7fa,#e8f5e9);
+  display:flex;align-items:center;justify-content:center;
+}
+.shell-img-wrap img{width:100%;height:100%;object-fit:cover}
+.shell-info{padding:40px 36px}
+.shell-num{
+  font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:2px;color:var(--teal);margin-bottom:8px;
+}
+.shell-name{
+  font-family:'Fraunces',serif;
+  font-size:28px;font-weight:900;color:var(--teal-dark);
+  margin-bottom:8px;letter-spacing:-.3px;
+}
+.shell-latin{font-size:14px;font-style:italic;color:var(--text3);margin-bottom:16px}
+.shell-caco{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--teal-pale);color:var(--teal-dark);
+  padding:6px 14px;border-radius:999px;
+  font-size:13px;font-weight:700;margin-bottom:14px;
+}
+.shell-desc{font-size:14px;color:var(--text2);line-height:1.65;margin-bottom:20px}
+.shell-tag{
+  display:inline-block;font-size:12px;font-weight:700;
+  padding:4px 12px;border-radius:999px;
+  background:rgba(46,204,113,0.12);color:var(--green-dark);
+  border:1px solid rgba(46,204,113,0.25);
+}
+.carousel-dots{
+  display:flex;justify-content:center;gap:8px;padding:20px;
+  border-top:1px solid var(--border);background:#fafafa;
+}
+.cdot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--border);cursor:pointer;transition:all .3s;border:none;
+}
+.cdot.active{width:24px;border-radius:4px;background:var(--teal)}
+.carousel-arrows{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:100%;display:flex;justify-content:space-between;
+  padding:0 16px;pointer-events:none;z-index:10;
+}
+.carrow{
+  width:40px;height:40px;border-radius:50%;
+  background:white;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;pointer-events:all;
+  box-shadow:0 4px 16px rgba(0,0,0,0.1);
+  font-size:16px;transition:all .2s;color:var(--teal-dark);
+}
+.carrow:hover{background:var(--teal);color:white;transform:scale(1.1)}
+/* Sell form */
+.sell-form-wrap{
+  max-width:640px;margin:0 auto;
+  background:white;border-radius:24px;
+  box-shadow:0 16px 56px rgba(26,143,160,0.1);
+  border:1px solid var(--border);
+  overflow:hidden;
+}
+.sell-form-header{
+  background:linear-gradient(135deg,var(--teal-dark),var(--teal));
+  padding:28px 36px;color:white;
+}
+.sell-form-header h3{
+  font-family:'Fraunces',serif;font-size:22px;
+  font-weight:900;margin-bottom:4px;
+}
+.sell-form-header p{font-size:14px;opacity:.8}
+.sell-form-body{padding:32px 36px}
+.form-row{display:flex;gap:16px;margin-bottom:20px}
+.form-group{flex:1;display:flex;flex-direction:column;gap:8px}
+.form-group label{font-size:13px;font-weight:700;color:var(--text2)}
+.form-group input,.form-group select{
+  padding:12px 16px;
+  border:1.5px solid rgba(26,143,160,0.2);
+  border-radius:10px;font-size:14px;
+  font-family:inherit;color:var(--text);
+  background:#f8fdfe;outline:none;transition:all .2s;
+}
+.form-group input:focus,.form-group select:focus{
+  border-color:var(--teal);background:white;
+  box-shadow:0 0 0 3px rgba(26,143,160,0.1);
+}
+.result-preview{
+  background:linear-gradient(135deg,#e8f9fc,#e8f5e9);
+  border:1.5px solid rgba(26,143,160,0.2);
+  border-radius:14px;padding:20px 24px;margin-bottom:20px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+}
+.result-preview-left .rlbl{
+  font-size:12px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.8px;color:var(--text3);margin-bottom:4px;
+}
+.result-preview-left .rval{
+  font-family:'Fraunces',serif;font-size:36px;
+  font-weight:900;color:var(--teal-dark);
+}
+.result-preview-right{text-align:right}
+.result-preview-right .rnote{font-size:12px;color:var(--text3);line-height:1.5}
+.price-table{
+  background:#f8fdfe;border-radius:12px;padding:14px 18px;
+  margin-bottom:20px;
+}
+.pt-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:6px 0;border-bottom:1px dashed var(--border);font-size:13px;
+}
+.pt-row:last-child{border-bottom:none}
+.pt-lbl{color:var(--text3)}
+.pt-val{font-weight:700;color:var(--teal-dark)}
 
-/* PROOF */
-#proof{background:var(--teal-dark);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:64px 48px}
-.proof-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:36px}
-.proof-card{background:rgba(10,42,47,0.6);padding:28px 22px;text-align:center;border:1px solid var(--border);transition:background .3s}
-.proof-card:first-child{border-radius:12px 0 0 12px}
-.proof-card:last-child{border-radius:0 12px 12px 0}
-.proof-card:hover{background:rgba(42,180,204,0.07)}
-.proof-src{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal-bright);margin-bottom:10px}
-.proof-num{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--white);line-height:1;margin-bottom:8px}
-.proof-desc{font-size:13px;color:var(--text-mid);line-height:1.5}
-
-/* PROCESS */
-#process{background:var(--teal-deep)}
-.proc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border-radius:16px;overflow:hidden;border:1px solid var(--border);margin-top:52px}
-.proc-card{background:var(--card-bg);padding:32px 26px;transition:background .3s;backdrop-filter:blur(8px)}
-.proc-card:hover{background:rgba(42,180,204,0.07)}
-.proc-num{font-family:'Syne',sans-serif;font-size:50px;font-weight:800;color:rgba(42,180,204,0.13);line-height:1;margin-bottom:14px}
-.proc-stage{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal-bright);margin-bottom:8px}
-.proc-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:10px}
-.proc-desc{font-size:13px;color:var(--text-mid);line-height:1.65}
-.machine-box{margin-top:48px;background:var(--card-bg);border:1px solid var(--border);border-radius:18px;padding:36px;backdrop-filter:blur(8px)}
-.mspecs{display:flex;justify-content:center;gap:44px;flex-wrap:wrap}
-.ms-val{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;background:linear-gradient(90deg,var(--teal-light),var(--green-leaf));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.ms-key{font-size:11px;color:var(--text-muted);margin-top:4px;text-transform:uppercase;letter-spacing:.5px;text-align:center}
-
-/* IOT */
-#iot{background:var(--teal-dark)}
-.iot-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:48px}
-.iot-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:26px;backdrop-filter:blur(12px)}
-.iot-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:18px;display:flex;align-items:center;gap:8px}
-.live-dot{width:7px;height:7px;background:#2ecc71;border-radius:50%;animation:pulse 2s infinite;box-shadow:0 0 8px #2ecc71}
-.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.metric-box{background:rgba(10,42,47,0.5);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
-.metric-val{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--teal-bright);line-height:1;margin-bottom:4px}
-.metric-lbl{font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px}
-.chart-wrap{position:relative;height:158px;margin-top:8px}
-.batch-list{display:flex;flex-direction:column;gap:10px}
-.batch-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:rgba(10,42,47,0.5);border:1px solid var(--border);border-radius:10px;font-size:13px}
-.batch-id{font-weight:600;color:var(--teal-light);font-family:'Syne',sans-serif;font-size:12px}
-.batch-st{font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px}
-.st-done{background:rgba(46,204,113,0.15);color:#2ecc71}
-.st-proc{background:rgba(42,180,204,0.15);color:var(--teal-bright)}
-.sim-lbl{display:inline-block;margin-top:18px;font-size:11px;color:var(--text-muted);background:rgba(42,180,204,0.07);border:1px solid var(--border);border-radius:999px;padding:4px 12px}
-
-/* PRODUCTS */
-#products{background:var(--teal-deep)}
-.prod-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:52px}
-.prod-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;overflow:hidden;transition:all .3s;backdrop-filter:blur(12px)}
-.prod-card:hover{border-color:var(--teal-bright);box-shadow:0 16px 48px rgba(42,180,204,0.14);transform:translateY(-4px)}
-.prod-top{padding:26px 26px 0;display:flex;justify-content:space-between;align-items:flex-start}
-.prod-tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:5px 12px;border-radius:999px}
-.tag-feed{background:rgba(240,192,64,0.14);color:var(--amber);border:1px solid rgba(240,192,64,0.28)}
-.tag-soil{background:rgba(79,204,86,0.14);color:var(--green-leaf);border:1px solid rgba(79,204,86,0.28)}
-.prod-name{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--white);margin:18px 26px 0;line-height:1.2}
-.prod-tag-line{font-size:13px;color:var(--text-mid);margin:8px 26px 0;line-height:1.6}
-.prod-specs{margin:18px 26px;display:flex;flex-direction:column;gap:8px}
-.spec-row{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--text-mid)}
-.spec-row::before{content:'';width:5px;height:5px;min-width:5px;background:var(--teal-bright);border-radius:50%;margin-top:6px}
-.prod-pricing{margin:0 26px 26px;background:rgba(10,42,47,0.5);border:1px solid var(--border);border-radius:12px;padding:16px}
-.pr-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px dashed var(--border)}
+/* ── PRODUCTS ── */
+#products{background:white;padding:96px 48px}
+.prod-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:52px}
+.prod-card{
+  border-radius:24px;overflow:hidden;
+  border:1.5px solid var(--border);
+  transition:all .3s;background:white;
+  box-shadow:0 4px 20px rgba(26,143,160,0.06);
+}
+.prod-card:hover{
+  border-color:var(--teal);
+  box-shadow:0 20px 56px rgba(26,143,160,0.14);
+  transform:translateY(-6px);
+}
+.prod-img{
+  height:220px;overflow:hidden;
+  background:linear-gradient(135deg,#e0f7fa,#e8f5e9);
+  display:flex;align-items:center;justify-content:center;
+}
+.prod-img img{width:100%;height:100%;object-fit:cover}
+.prod-body{padding:28px}
+.prod-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:1px;padding:5px 12px;border-radius:999px;
+  margin-bottom:14px;
+}
+.badge-feed{background:#fff8e1;color:#b7791f;border:1px solid rgba(183,121,31,.25)}
+.badge-soil{background:#f0fff4;color:#276749;border:1px solid rgba(39,103,73,.25)}
+.prod-name{
+  font-family:'Fraunces',serif;font-size:24px;
+  font-weight:900;color:var(--text);margin-bottom:8px;letter-spacing:-.3px;
+}
+.prod-tagline{font-size:14px;color:var(--text2);line-height:1.65;margin-bottom:18px}
+.prod-specs{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.pspec{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--text2)}
+.pspec::before{
+  content:'';min-width:6px;height:6px;
+  background:var(--teal);border-radius:50%;margin-top:5px;flex-shrink:0;
+}
+.pricing-box{
+  background:linear-gradient(135deg,#e8f9fc,#f0f9f0);
+  border-radius:14px;padding:18px;margin-bottom:20px;
+  border:1px solid var(--border);
+}
+.pr-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:9px 0;border-bottom:1px dashed var(--border);
+}
 .pr-row:last-child{border-bottom:none;padding-bottom:0}
-.pr-lbl{font-size:13px;color:var(--text-muted)}
-.pr-lbl strong{display:block;font-size:11px;color:var(--text-muted);font-weight:400}
-.pr-val{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--teal-light)}
-.pr-val small{font-size:12px;font-weight:400;color:var(--text-muted)}
-.prod-cta{padding:0 26px 26px}
+.pr-lbl{font-size:13px;color:var(--text3)}
+.pr-lbl strong{display:block;font-size:11px;color:var(--text3);font-weight:400}
+.pr-val{font-family:'Fraunces',serif;font-size:20px;font-weight:900;color:var(--teal-dark)}
+.pr-val small{font-size:12px;font-weight:400;color:var(--text3);font-family:'Plus Jakarta Sans',sans-serif}
 
-/* SELL */
-#sell{background:var(--teal-dark)}
-.sell-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
-.sell-steps{display:flex;flex-direction:column;gap:22px;margin-top:32px}
-.sell-step{display:flex;gap:18px;align-items:flex-start}
-.step-num{width:40px;height:40px;border-radius:10px;flex-shrink:0;background:linear-gradient(135deg,var(--teal-mid),var(--teal-bright));color:white;font-family:'Syne',sans-serif;font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(42,180,204,0.28)}
-.step-content h4{font-size:16px;font-weight:600;color:var(--white);margin-bottom:4px}
-.step-content p{font-size:14px;color:var(--text-mid);line-height:1.6}
-.earn-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;padding:32px;backdrop-filter:blur(12px)}
-.earn-card h3{font-family:'Syne',sans-serif;font-size:21px;font-weight:800;color:var(--white);margin-bottom:6px}
-.earn-card>p{font-size:14px;color:var(--text-mid);margin-bottom:22px}
-.inp-group{margin-bottom:16px}
-.inp-group label{display:block;font-size:13px;font-weight:600;color:var(--text-mid);margin-bottom:8px}
-.inp-row{display:flex;gap:10px}
-.inp-row input,.inp-row select{padding:12px 14px;background:rgba(10,42,47,0.6);border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;color:var(--text-primary);outline:none;transition:border-color .2s}
-.inp-row input{flex:1}
-.inp-row input:focus,.inp-row select:focus{border-color:var(--teal-bright)}
-.inp-row select option{background:var(--teal-dark)}
-.result-box{background:linear-gradient(135deg,var(--teal-mid),#0a3a42);border-radius:14px;padding:20px 22px;margin-top:14px;border:1px solid rgba(42,180,204,0.28)}
-.result-lbl{font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
-.result-amt{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:var(--teal-pale)}
-.result-note{font-size:12px;color:rgba(255,255,255,0.38);margin-top:4px}
-.price-note{font-size:12px;color:var(--text-muted);margin-top:12px;text-align:center;padding:10px;background:rgba(42,180,204,0.06);border:1px solid var(--border);border-radius:8px}
-.price-note strong{color:var(--teal-bright)}
+/* ── PROCESS ── */
+#process{
+  background:linear-gradient(160deg,var(--dark) 0%,var(--dark2) 100%);
+  padding:96px 48px;
+}
+#process .sec-lbl{color:var(--teal-light)}
+#process .sec-title{color:white}
+#process .sec-sub{color:rgba(255,255,255,.55)}
+.proc-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:rgba(255,255,255,.06);
+  border-radius:20px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.06);margin-top:52px;
+}
+.proc-card{
+  background:rgba(255,255,255,.03);
+  padding:32px 26px;transition:background .3s;
+}
+.proc-card:hover{background:rgba(42,180,204,.08)}
+.proc-num{
+  font-family:'Fraunces',serif;font-size:52px;
+  font-weight:900;color:rgba(42,180,204,.15);
+  line-height:1;margin-bottom:14px;
+}
+.proc-stage{
+  font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:1.5px;color:var(--teal-light);margin-bottom:8px;
+}
+.proc-name{
+  font-family:'Fraunces',serif;font-size:17px;
+  font-weight:700;color:white;margin-bottom:10px;
+}
+.proc-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.65}
+.machine-box{
+  margin-top:48px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;padding:36px;
+  display:flex;justify-content:center;flex-wrap:wrap;gap:44px;
+}
+.ms-val{
+  font-family:'Fraunces',serif;font-size:28px;font-weight:900;
+  background:linear-gradient(90deg,var(--teal-light),var(--green));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-align:center;
+}
+.ms-key{font-size:11px;color:rgba(255,255,255,.35);margin-top:4px;text-transform:uppercase;letter-spacing:.5px;text-align:center}
 
-/* WHY */
-#why{background:var(--teal-deep)}
-.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:52px}
-.why-card{padding:26px;border-radius:16px;background:var(--card-bg);border:1px solid var(--card-border);transition:all .3s;backdrop-filter:blur(8px)}
-.why-card:hover{border-color:var(--teal-bright);background:rgba(42,180,204,0.06)}
-.why-icon{font-size:26px;margin-bottom:14px}
-.why-card h4{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--white);margin-bottom:10px}
-.why-card p{font-size:13px;color:var(--text-mid);line-height:1.65}
+/* ── IOT ── */
+#iot{background:#f0fafb;padding:96px 48px}
+.iot-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:48px}
+.iot-card{
+  background:white;border:1.5px solid var(--border);
+  border-radius:20px;padding:28px;
+  box-shadow:0 4px 20px rgba(26,143,160,0.06);
+}
+.iot-lbl{
+  font-size:12px;font-weight:700;text-transform:uppercase;
+  letter-spacing:1.5px;color:var(--text3);margin-bottom:18px;
+  display:flex;align-items:center;gap:8px;
+}
+.live-dot{width:7px;height:7px;background:#2ecc71;border-radius:50%;animation:pulse 2s infinite;box-shadow:0 0 8px #2ecc71}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.metric-box{
+  background:linear-gradient(135deg,#e8f9fc,#f0f9f0);
+  border:1px solid var(--border);border-radius:12px;
+  padding:16px;text-align:center;
+}
+.metric-val{
+  font-family:'Fraunces',serif;font-size:26px;
+  font-weight:900;color:var(--teal-dark);
+  line-height:1;margin-bottom:4px;
+}
+.metric-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px}
+.chart-wrap{position:relative;height:160px;margin-top:8px}
+.batch-list{display:flex;flex-direction:column;gap:10px}
+.batch-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 14px;background:#f8fdfe;
+  border:1px solid var(--border);border-radius:10px;
+}
+.batch-id{font-weight:700;color:var(--teal-dark);font-size:12px;font-family:'Fraunces',serif}
+.batch-st{font-size:10px;font-weight:700;padding:3px 10px;border-radius:999px}
+.st-done{background:rgba(46,204,113,.12);color:#1a9e50}
+.st-proc{background:rgba(26,143,160,.12);color:var(--teal)}
+.sim-badge{
+  display:inline-block;margin-top:16px;
+  font-size:11px;color:var(--text3);
+  background:#f0f0f0;border-radius:999px;padding:4px 12px;
+  border:1px solid var(--border);
+}
 
-/* CONTACT */
-#contact{background:var(--teal-dark);border-top:1px solid var(--border)}
+/* ── PROOF ── */
+#proof{
+  background:linear-gradient(135deg,var(--teal-dark) 0%,#0e7a6e 100%);
+  padding:72px 48px;
+}
+.proof-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:36px}
+.proof-card{
+  background:rgba(255,255,255,.08);padding:28px 22px;
+  text-align:center;border:1px solid rgba(255,255,255,.1);
+  transition:background .3s;
+}
+.proof-card:first-child{border-radius:14px 0 0 14px}
+.proof-card:last-child{border-radius:0 14px 14px 0}
+.proof-card:hover{background:rgba(255,255,255,.14)}
+.proof-src{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.55);margin-bottom:10px}
+.proof-num{font-family:'Fraunces',serif;font-size:32px;font-weight:900;color:white;line-height:1;margin-bottom:8px}
+.proof-desc{font-size:13px;color:rgba(255,255,255,.65);line-height:1.5}
+
+/* ── WHY ── */
+#why{background:white;padding:96px 48px}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px}
+.why-card{
+  padding:28px;border-radius:18px;
+  background:#f8fdfe;border:1.5px solid var(--border);
+  transition:all .3s;
+}
+.why-card:hover{border-color:var(--teal);background:var(--teal-pale);transform:translateY(-4px);box-shadow:0 12px 36px rgba(26,143,160,.1)}
+.why-icon{font-size:28px;margin-bottom:14px}
+.why-card h4{font-family:'Fraunces',serif;font-size:16px;font-weight:900;color:var(--text);margin-bottom:10px}
+.why-card p{font-size:13px;color:var(--text2);line-height:1.65}
+
+/* ── CONTACT ── */
+#contact{
+  background:linear-gradient(160deg,#0a1628 0%,#0e3d3a 100%);
+  padding:96px 48px;
+}
 .contact-inner{max-width:600px;margin:0 auto;text-align:center}
-.contact-inner .sec-sub{margin:0 auto 44px;color:var(--text-mid)}
+#contact .sec-lbl{color:var(--teal-light)}
+#contact .sec-title{color:white}
+#contact .sec-sub{color:rgba(255,255,255,.55);margin:0 auto 44px}
 .contact-opts{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-.cbtn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:12px;font-size:15px;font-weight:600;text-decoration:none;transition:all .2s}
-.cwa{background:#25D366;color:white;box-shadow:0 4px 20px rgba(37,211,102,0.28)}
-.cwa:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,211,102,0.38)}
-.cother{background:rgba(42,180,204,0.1);color:var(--teal-light);border:1px solid var(--border)}
-.cother:hover{background:rgba(42,180,204,0.2)}
-.contact-info{margin-top:44px;padding-top:28px;border-top:1px solid var(--border);display:flex;justify-content:center;gap:44px;flex-wrap:wrap}
-.cd-lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:6px}
-.cd-val{font-size:15px;font-weight:600;color:var(--text-primary)}
+.cbtn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:12px;font-size:15px;font-weight:700;text-decoration:none;transition:all .25s}
+.cwa{background:#25D366;color:white;box-shadow:0 4px 20px rgba(37,211,102,.3)}
+.cwa:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,211,102,.4)}
+.cother{background:rgba(255,255,255,.1);color:white;border:1px solid rgba(255,255,255,.2)}
+.cother:hover{background:rgba(255,255,255,.2)}
+.contact-info{margin-top:40px;padding-top:28px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:center;gap:44px;flex-wrap:wrap}
+.cd-lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.35);margin-bottom:6px}
+.cd-val{font-size:15px;font-weight:600;color:rgba(255,255,255,.85)}
 
-/* FOOTER */
-footer{background:rgba(5,20,24,0.96);padding:26px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;border-top:1px solid var(--border)}
-footer p{font-size:13px;color:var(--text-muted)}
-.footer-links{display:flex;gap:22px}
-.footer-links a{font-size:13px;color:var(--text-muted);text-decoration:none;transition:color .2s}
+/* ── FOOTER ── */
+footer{background:#06101a;padding:24px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border-top:1px solid rgba(255,255,255,.06)}
+footer p{font-size:13px;color:rgba(255,255,255,.3)}
+.footer-links{display:flex;gap:20px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.3);text-decoration:none;transition:color .2s}
 .footer-links a:hover{color:var(--teal-light)}
 
-/* RESPONSIVE */
+/* SHARED */
+.sec-lbl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;color:var(--teal);margin-bottom:10px}
+.sec-title{font-family:'Fraunces',serif;font-size:clamp(28px,3.5vw,44px);font-weight:900;color:var(--text);line-height:1.1;margin-bottom:14px;letter-spacing:-.5px}
+.sec-sub{font-size:16px;color:var(--text2);line-height:1.75;max-width:560px}
+.btn-primary{background:linear-gradient(135deg,var(--teal-dark),var(--teal));color:white;padding:14px 28px;border-radius:12px;font-size:15px;font-weight:700;text-decoration:none;transition:all .25s;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 6px 24px rgba(26,143,160,.28)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(26,143,160,.38)}
+.btn-green{background:linear-gradient(135deg,var(--green-dark),var(--green))}
+
 @media(max-width:900px){
-  nav{padding:12px 18px}
+  nav{padding:12px 16px}
   .nav-links{display:none}
-  section{padding:68px 18px}
+  section,.hero{padding:72px 18px}
   .hero{padding:96px 18px 60px}
-  .proof-grid{grid-template-columns:1fr 1fr}
-  .proc-grid,.iot-grid,.prod-grid,.why-grid{grid-template-columns:1fr}
-  .sell-grid{grid-template-columns:1fr;gap:36px}
-  footer{flex-direction:column;padding:22px 18px}
+  .shell-slide{grid-template-columns:1fr}
+  .shell-img-wrap{height:200px}
+  .prod-grid,.proc-grid,.iot-grid,.why-grid,.proof-grid{grid-template-columns:1fr}
+  footer{flex-direction:column;padding:20px 18px}
 }
 </style>
 </head>
 <body>
+
+<!-- FLOATING BUBBLES -->
+<div class="bubbles" id="bubbles"></div>
 
 <!-- NAV -->
 <nav>
@@ -214,10 +548,10 @@ footer p{font-size:13px;color:var(--text-muted)}
     <span class="nav-logo-text">RadiaShell</span>
   </a>
   <ul class="nav-links">
+    <li><a href="#sell">Jual Limbah</a></li>
+    <li><a href="#products">Produk</a></li>
     <li><a href="#process">Proses</a></li>
     <li><a href="#iot">IoT Monitor</a></li>
-    <li><a href="#products">Produk</a></li>
-    <li><a href="#sell">Jual Limbah</a></li>
   </ul>
   <a href="#contact" class="nav-cta">Hubungi Kami</a>
 </nav>
@@ -229,155 +563,139 @@ footer p{font-size:13px;color:var(--text-muted)}
       <source src="/background web radiashell.mp4" type="video/mp4"/>
     </video>
   </div>
+  <div class="hero-overlay"></div>
   <div class="hero-content">
-    <div class="hero-badge">
-      <span class="badge-dot"></span>
-      Platform Aktif — Cilincing, Jakarta Utara
+    <div class="hero-eyebrow">🐚 Smart Green Biorefinery · Cilincing, Jakarta Utara</div>
+    <h1>Limbah Kerang<br/>Jadi <em>Emas Hijau</em></h1>
+    <p class="hero-sub">RadiaShell mengubah cangkang kerang bernilai nol menjadi Bio-Calcium Powder & Soil Conditioner premium — langsung di pesisir, tanpa infrastruktur besar.</p>
+    <div class="hero-hook">
+      💡 <strong>Tahukah kamu?</strong> Setiap kg cangkang mengandung <strong>95–98% CaCO₃</strong> murni — bahan baku premium yang selama ini terbuang percuma di pesisir Indonesia.
     </div>
-    <h1>Limbah Kerang Jadi<br/><span class="accent">Produk Biotech</span><br/>Bernilai Tinggi</h1>
-    <p>RadiaShell mengubah cangkang kerang pesisir menjadi Bio-Calcium Powder dan Soil Conditioner premium melalui teknologi Microwave-Assisted Calcination (MAC) yang efisien, terstandarisasi, dan ramah lingkungan.</p>
     <div class="hero-btns">
-      <a href="#sell" class="btn-primary">🐚 Jual Limbah Kerang</a>
-      <a href="#products" class="btn-sec">🌿 Lihat Produk</a>
+      <a href="#sell" class="btn-hero-primary">🐚 Jual Limbah Kerang</a>
+      <a href="#products" class="btn-hero-sec">🌿 Lihat Produk</a>
     </div>
     <div class="hero-stats">
-      <div class="stat-item"><span class="stat-num">50%</span><span class="stat-lbl">Hemat Energi</span></div>
-      <div class="stat-item"><span class="stat-num">900t</span><span class="stat-lbl">Cangkang/Tahun</span></div>
-      <div class="stat-item"><span class="stat-num">30+</span><span class="stat-lbl">Green Jobs</span></div>
-      <div class="stat-item"><span class="stat-num">CoA</span><span class="stat-lbl">Digital Otomatis</span></div>
+      <div class="hstat"><div class="hstat-num">50%</div><div class="hstat-lbl">Hemat Energi</div></div>
+      <div class="hstat"><div class="hstat-num">900t</div><div class="hstat-lbl">Cangkang/Tahun</div></div>
+      <div class="hstat"><div class="hstat-num">30+</div><div class="hstat-lbl">Green Jobs</div></div>
+      <div class="hstat"><div class="hstat-num">CoA</div><div class="hstat-lbl">Digital Otomatis</div></div>
     </div>
   </div>
 </section>
 
-<!-- PROOF -->
-<section id="proof">
-  <div style="text-align:center;margin-bottom:8px">
-    <div class="sec-lbl">Didukung Data Resmi</div>
+<!-- SELL DASHBOARD -->
+<section id="sell">
+  <div class="sell-hero-text">
+    <div class="sec-lbl">Untuk Nelayan & Pengupas Kerang</div>
+    <div class="sell-hook-big">Jenis kerang apa saja yang kamu punya?<br/><em>Jual ke RadiaShell, pasti untung!</em></div>
+    <p class="sell-hook-sub">Kami membeli semua jenis cangkang kerang langsung dari komunitas pesisir. Tidak perlu jauh-jauh, unit kami hadir di lokasi Anda.</p>
   </div>
-  <div class="proof-grid">
-    <div class="proof-card">
-      <div class="proof-src">KKP · 2024</div>
-      <div class="proof-num">6,37 Jt</div>
-      <div class="proof-desc">Ton produksi perikanan budidaya nasional — menghasilkan jutaan ton limbah cangkang belum terkelola</div>
-    </div>
-    <div class="proof-card">
-      <div class="proof-src">KLHK · 2023</div>
-      <div class="proof-num">48,3 Jt</div>
-      <div class="proof-desc">Hektare lahan terdegradasi akibat keasaman tanah — butuh solusi kalsium terjangkau</div>
-    </div>
-    <div class="proof-card">
-      <div class="proof-src">Mordor Intelligence · 2025</div>
-      <div class="proof-num">USD 14,2M</div>
-      <div class="proof-desc">Proyeksi pasar pakan ternak Indonesia 2030 — permintaan kalsium bio-based terus tumbuh</div>
-    </div>
-    <div class="proof-card">
-      <div class="proof-src">UNDP · 2023</div>
-      <div class="proof-num">4 Jt+</div>
-      <div class="proof-desc">Potensi green jobs baru Indonesia 2030 — ekonomi pesisir jadi sektor prioritas utama</div>
-    </div>
-  </div>
-</section>
 
-<!-- PROCESS -->
-<section id="process">
-  <div class="sec-lbl">Teknologi Kami</div>
-  <div class="sec-title">6 Tahap Proses RadiaShell</div>
-  <div class="sec-sub">Dari cangkang mentah hingga produk bersertifikat — semua dalam satu unit portabel 2m × 1.5m yang bisa di-deploy langsung di pesisir.</div>
-  <div class="proc-grid">
-    <div class="proc-card">
-      <div class="proc-num">01</div>
-      <div class="proc-stage">Stage 1</div>
-      <div class="proc-name">Collection & Pre-Sorting</div>
-      <div class="proc-desc">Cangkang dikumpulkan dari komunitas nelayan. Setiap karung diberi label QR code untuk sistem traceability digital dari sumber ke produk jadi.</div>
+  <!-- Shell Carousel -->
+  <div class="shell-carousel">
+    <div class="carousel-arrows">
+      <button class="carrow" id="prevBtn" onclick="moveCarousel(-1)">&#8592;</button>
+      <button class="carrow" id="nextBtn" onclick="moveCarousel(1)">&#8594;</button>
     </div>
-    <div class="proc-card">
-      <div class="proc-num">02</div>
-      <div class="proc-stage">Stage 2</div>
-      <div class="proc-name">Washing & Drying</div>
-      <div class="proc-desc">Dicuci dalam drum washer dengan agitasi mekanis. Kadar air diturunkan di bawah 5% sebelum masuk penggilingan untuk hasil optimal.</div>
+    <div class="carousel-track" id="carouselTrack">
+      <div class="shell-slide">
+        <div class="shell-img-wrap"><img src="/jenis kerang 1.jpg" alt="Kerang Hijau" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=font-size:80px>🐚</div>'"/></div>
+        <div class="shell-info">
+          <div class="shell-num">Jenis 01 / 05</div>
+          <div class="shell-name">Kerang Hijau</div>
+          <div class="shell-latin">Perna viridis</div>
+          <div class="shell-caco">✓ CaCO₃: 95–98%</div>
+          <p class="shell-desc">Komoditas terbesar di Indonesia. Produksi mencapai 309.886 ton/tahun — sekitar 70% adalah limbah cangkang yang berpotensi ≥216.000 ton/tahun. Sentra utama di Cilincing, Jakarta Utara.</p>
+          <span class="shell-tag">⭐ Bahan Baku Utama RadiaShell</span>
+        </div>
+      </div>
+      <div class="shell-slide">
+        <div class="shell-img-wrap"><img src="/jenis kerang 2.jpeg" alt="Tiram" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=font-size:80px>🦪</div>'"/></div>
+        <div class="shell-info">
+          <div class="shell-num">Jenis 02 / 05</div>
+          <div class="shell-name">Tiram / Oyster</div>
+          <div class="shell-latin">Crassostrea gigas</div>
+          <div class="shell-caco">✓ CaCO₃: 93–96%</div>
+          <p class="shell-desc">Cangkang tebal dan berat dengan hasil CaCO₃ per kg input yang tinggi. Struktur kristal dominan kalsit — ideal untuk produk Bio-Calcium grade premium.</p>
+          <span class="shell-tag">🥇 Grade Premium Bio-Calcium</span>
+        </div>
+      </div>
+      <div class="shell-slide">
+        <div class="shell-img-wrap"><img src="/jenis kerang 3.webp" alt="Kerang Darah" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=font-size:80px>🐚</div>'"/></div>
+        <div class="shell-info">
+          <div class="shell-num">Jenis 03 / 05</div>
+          <div class="shell-name">Kerang Darah</div>
+          <div class="shell-latin">Anadara granosa</div>
+          <div class="shell-caco">✓ CaCO₃: ≥90%</div>
+          <p class="shell-desc">Sangat melimpah di Cirebon, Demak, dan Brebes. Mudah dikumpulkan dari sentra pengupasan — pasokan konsisten sepanjang tahun untuk operasional RadiaShell.</p>
+          <span class="shell-tag">📦 Pasokan Konsisten Sepanjang Tahun</span>
+        </div>
+      </div>
+      <div class="shell-slide">
+        <div class="shell-img-wrap"><img src="/jenis kerang 4.jpg" alt="Kerang Mutiara" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=font-size:80px>🐚</div>'"/></div>
+        <div class="shell-info">
+          <div class="shell-num">Jenis 04 / 05</div>
+          <div class="shell-name">Kerang Mutiara</div>
+          <div class="shell-latin">Placuna placenta</div>
+          <div class="shell-caco">✓ CaCO₃: 94–97%</div>
+          <p class="shell-desc">Cangkang tipis transparan yang lebih mudah digiling dengan waktu kalsinasi lebih singkat. Efisiensi proses lebih tinggi dibanding jenis cangkang tebal.</p>
+          <span class="shell-tag">⚡ Efisiensi Kalsinasi Tinggi</span>
+        </div>
+      </div>
+      <div class="shell-slide">
+        <div class="shell-img-wrap"><img src="/jenis kerang 5.jpg" alt="Scallop" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=font-size:80px>🐚</div>'"/></div>
+        <div class="shell-info">
+          <div class="shell-num">Jenis 05 / 05</div>
+          <div class="shell-name">Scallop</div>
+          <div class="shell-latin">Argopecten sp.</div>
+          <div class="shell-caco">✓ CaCO₃: 94–97%</div>
+          <p class="shell-desc">Struktur aragonit dan kalsit dengan bioavailabilitas tinggi — sangat ideal untuk suplemen pakan unggas dan akuakultur premium karena penyerapan kalsiumnya optimal.</p>
+          <span class="shell-tag">🌟 Bioavailabilitas Tertinggi untuk Pakan</span>
+        </div>
+      </div>
     </div>
-    <div class="proc-card">
-      <div class="proc-num">03</div>
-      <div class="proc-stage">Stage 3</div>
-      <div class="proc-name">Crushing & Fine Milling</div>
-      <div class="proc-desc">Hammer mill menghancurkan cangkang, lalu digiling halus menghasilkan CaCO₃ powder 60–200 mesh multi-grade via vibrating screen otomatis.</div>
-    </div>
-    <div class="proc-card">
-      <div class="proc-num">04</div>
-      <div class="proc-stage">Stage 4 — Inti</div>
-      <div class="proc-name">Microwave-Assisted Calcination</div>
-      <div class="proc-desc">Kalsinasi menggunakan gelombang mikro 2.45 GHz — bukan bahan bakar fosil. Hemat energi hingga 50% vs kiln konvensional, suhu terkontrol IoT hingga 900°C.</div>
-    </div>
-    <div class="proc-card">
-      <div class="proc-num">05</div>
-      <div class="proc-stage">Stage 5</div>
-      <div class="proc-name">Post-Processing Dual Jalur</div>
-      <div class="proc-desc">Output dibagi dua otomatis: jalur Bio-Calcium (blending Vitamin D3 → auto-packer 1kg pouch) dan Soil Conditioner (granulasi → sack bagger).</div>
-    </div>
-    <div class="proc-card">
-      <div class="proc-num">06</div>
-      <div class="proc-stage">Stage 6</div>
-      <div class="proc-name">QC & CoA Generation</div>
-      <div class="proc-desc">Setiap batch menghasilkan Certificate of Analysis digital otomatis via ESP32 + cloud. Produk dilacak penuh via QR code — standar pabrikan pakan besar.</div>
-    </div>
+    <div class="carousel-dots" id="carouselDots"></div>
   </div>
-  <div class="machine-box">
-    <div class="mspecs">
-      <div class="spec-item"><div class="ms-val">2m × 1.5m</div><div class="ms-key">Dimensi Unit</div></div>
-      <div class="spec-item"><div class="ms-val">10 kW</div><div class="ms-key">Daya Konsumsi</div></div>
-      <div class="spec-item"><div class="ms-val">~50%</div><div class="ms-key">Efisiensi Energi</div></div>
-      <div class="spec-item"><div class="ms-val">250 kg/hari</div><div class="ms-key">Kapasitas Bio-Calcium</div></div>
-      <div class="spec-item"><div class="ms-val">200 kg/hari</div><div class="ms-key">Kapasitas Soil Conditioner</div></div>
-    </div>
-  </div>
-</section>
 
-<!-- IOT -->
-<section id="iot">
-  <div class="sec-lbl">IoT Integration</div>
-  <div class="sec-title">Real-Time Process Monitoring</div>
-  <div class="sec-sub">Sistem ESP32 + cloud memantau seluruh parameter produksi secara otomatis dan menghasilkan CoA digital per batch.</div>
-  <div class="iot-grid">
-    <div class="iot-card">
-      <div class="iot-lbl"><span class="live-dot"></span>MAC v1.0 · Unit RADIA-JKT-01</div>
-      <div class="metrics-grid">
-        <div class="metric-box"><div class="metric-val" id="m-temp">892°C</div><div class="metric-lbl">Drum Temp</div></div>
-        <div class="metric-box"><div class="metric-val" id="m-power">9.4 kW</div><div class="metric-lbl">Power Load</div></div>
-        <div class="metric-box"><div class="metric-val" id="m-output">45 kg/h</div><div class="metric-lbl">Output Flow</div></div>
-        <div class="metric-box"><div class="metric-val" id="m-eff">98.2%</div><div class="metric-lbl">Efficiency</div></div>
-      </div>
-      <span class="sim-lbl">⚡ Simulated Demo — Prototype Dashboard</span>
+  <!-- Sell Form + Calculator -->
+  <div class="sell-form-wrap">
+    <div class="sell-form-header">
+      <h3>💰 Kalkulator Penghasilan Kerang</h3>
+      <p>Estimasi pendapatan Anda sebelum menghubungi koordinator RadiaShell</p>
     </div>
-    <div class="iot-card">
-      <div class="iot-lbl">Produksi Harian — 7 Hari Terakhir</div>
-      <div class="chart-wrap"><canvas id="outputChart"></canvas></div>
-    </div>
-    <div class="iot-card">
-      <div class="iot-lbl">Batch Log Terbaru</div>
-      <div class="batch-list">
-        <div class="batch-item">
-          <div><div class="batch-id">BATCH-2026-0312</div><div style="font-size:11px;color:var(--text-muted)">Bio-Calcium · 48.2 kg · QR: A3F9</div></div>
-          <span class="batch-st st-done">✓ CoA Ready</span>
+    <div class="sell-form-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Berat cangkang (kg)</label>
+          <input type="number" id="weight" placeholder="Contoh: 50" min="0" oninput="calc()"/>
         </div>
-        <div class="batch-item">
-          <div><div class="batch-id">BATCH-2026-0311</div><div style="font-size:11px;color:var(--text-muted)">Soil Conditioner · 62.1 kg · QR: B7D2</div></div>
-          <span class="batch-st st-done">✓ CoA Ready</span>
-        </div>
-        <div class="batch-item">
-          <div><div class="batch-id">BATCH-2026-0310</div><div style="font-size:11px;color:var(--text-muted)">Bio-Calcium · 51.7 kg · QR: C2E8</div></div>
-          <span class="batch-st st-proc">⟳ Processing</span>
+        <div class="form-group">
+          <label>Kualitas / Grade</label>
+          <select id="grade" onchange="calc()">
+            <option value="600">Grade A — Kering & bersih</option>
+            <option value="450">Grade B — Agak basah</option>
+            <option value="300">Grade C — Basah / campuran</option>
+          </select>
         </div>
       </div>
-    </div>
-    <div class="iot-card">
-      <div class="iot-lbl">Dampak Lingkungan Kumulatif</div>
-      <div class="metrics-grid">
-        <div class="metric-box"><div class="metric-val" id="m-co2" style="color:var(--green-leaf)">1.742t</div><div class="metric-lbl">CO₂ Dicegah</div></div>
-        <div class="metric-box"><div class="metric-val" style="color:var(--green-leaf)">871t</div><div class="metric-lbl">Cangkang Terolah</div></div>
-        <div class="metric-box"><div class="metric-val" style="color:var(--amber)">30+</div><div class="metric-lbl">Green Jobs</div></div>
-        <div class="metric-box"><div class="metric-val" style="color:var(--amber)">3</div><div class="metric-lbl">Unit Aktif</div></div>
+      <div class="result-preview">
+        <div class="result-preview-left">
+          <div class="rlbl">Estimasi Penghasilan Anda</div>
+          <div class="rval" id="result">Rp 0</div>
+        </div>
+        <div class="result-preview-right">
+          <div class="rnote" id="rnote">Masukkan berat<br/>untuk menghitung</div>
+        </div>
       </div>
-      <span class="sim-lbl">📊 Proyeksi Tahun ke-5</span>
+      <div class="price-table">
+        <div class="pt-row"><span class="pt-lbl">Grade A — Kering & bersih</span><span class="pt-val">Rp 600 / kg</span></div>
+        <div class="pt-row"><span class="pt-lbl">Grade B — Agak basah</span><span class="pt-val">Rp 450 / kg</span></div>
+        <div class="pt-row"><span class="pt-lbl">Grade C — Basah / campuran</span><span class="pt-val">Rp 300 / kg</span></div>
+      </div>
+      <a href="https://wa.me/6281387604358?text=Halo%20RadiaShell%2C%20saya%20mau%20jual%20limbah%20cangkang%20kerang.%20Bisa%20jadwalkan%20pengambilan%20ke%20lokasi%20saya%3F" target="_blank" class="btn-primary" style="width:100%;justify-content:center;font-size:15px;padding:15px;">
+        📱 Hubungi Koordinator via WhatsApp
+      </a>
     </div>
   </div>
 </section>
@@ -389,94 +707,123 @@ footer p{font-size:13px;color:var(--text-muted)}
   <div class="sec-sub">Seluruh produk dilengkapi Certificate of Analysis (CoA) digital dan sistem traceability QR code per batch produksi.</div>
   <div class="prod-grid">
     <div class="prod-card">
-      <div class="prod-top"><span class="prod-tag tag-feed">🐔 Feed Grade</span></div>
-      <div class="prod-name">Bio-Calcium Powder</div>
-      <div class="prod-tag-line">Suplemen kalsium premium untuk pakan ternak unggas dan akuakultur, dilengkapi Vitamin D3 untuk absorpsi maksimal.</div>
-      <div class="prod-specs">
-        <div class="spec-row">Ukuran partikel: 60–200 mesh micro-powder</div>
-        <div class="spec-row">Kandungan CaCO₃: 95–98% dari kerang hijau</div>
-        <div class="spec-row">Blending Vitamin D3: 2.000–5.000 IU/kg</div>
-        <div class="spec-row">Kemasan: 1kg Pouch (BOPP) atau Bulk</div>
-        <div class="spec-row">Dosis: 0.5%–1.0% dari total pakan</div>
-        <div class="spec-row">CoA digital otomatis per batch produksi</div>
+      <div class="prod-img">
+        <img src="/Product RadiaShell Bio-Calcium Powder.png" alt="Bio-Calcium Powder" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=font-size:64px;padding:40px>🐚</div>'"/>
       </div>
-      <div class="prod-pricing">
-        <div class="pr-row"><div class="pr-lbl">Retail<strong>1kg Pouch</strong></div><div class="pr-val">Rp 12.000 <small>/kg</small></div></div>
-        <div class="pr-row"><div class="pr-lbl">Bulk Order<strong>≥ 100 kg</strong></div><div class="pr-val">Rp 10.500 <small>/kg</small></div></div>
-      </div>
-      <div class="prod-cta">
+      <div class="prod-body">
+        <div class="prod-badge badge-feed">🐔 Feed Grade</div>
+        <div class="prod-name">Bio-Calcium Powder</div>
+        <div class="prod-tagline">Suplemen kalsium premium untuk pakan ternak unggas dan akuakultur, dilengkapi Vitamin D3 untuk absorpsi maksimal.</div>
+        <div class="prod-specs">
+          <div class="pspec">Ukuran partikel: 60–200 mesh micro-powder</div>
+          <div class="pspec">Kandungan CaCO₃: 95–98% dari kerang hijau</div>
+          <div class="pspec">Blending Vitamin D3: 2.000–5.000 IU/kg</div>
+          <div class="pspec">CoA digital otomatis per batch produksi</div>
+        </div>
+        <div class="pricing-box">
+          <div class="pr-row"><div class="pr-lbl">Retail<strong>1kg Pouch</strong></div><div class="pr-val">Rp 12.000 <small>/kg</small></div></div>
+          <div class="pr-row"><div class="pr-lbl">Bulk Order<strong>≥ 100 kg</strong></div><div class="pr-val">Rp 10.500 <small>/kg</small></div></div>
+        </div>
         <a href="https://wa.me/6281387604358?text=Halo%20RadiaShell%2C%20saya%20tertarik%20Bio-Calcium%20Powder." target="_blank" class="btn-primary" style="width:100%;justify-content:center;">Order via WhatsApp</a>
       </div>
     </div>
     <div class="prod-card">
-      <div class="prod-top"><span class="prod-tag tag-soil">🌱 Soil Grade</span></div>
-      <div class="prod-name">Soil Conditioner</div>
-      <div class="prod-tag-line">Pembenah tanah organik untuk menetralisir pH tanah masam dan meningkatkan ketersediaan nutrisi tanaman.</div>
-      <div class="prod-specs">
-        <div class="spec-row">Ukuran granul: 2–6mm dust-free slow-release</div>
-        <div class="spec-row">Kandungan CaCO₃/CaO untuk netralisir Al³⁺</div>
-        <div class="spec-row">Sistem granulasi: Pan Granulator otomatis</div>
-        <div class="spec-row">Kemasan: 1kg Sack atau Bulk ≥ 500 kg</div>
-        <div class="spec-row">Dosis: 100–150g per pohon kelapa sawit</div>
-        <div class="spec-row">1 ton/ha untuk perbaikan pH tanah</div>
+      <div class="prod-img">
+        <img src="/Product RadiaShell Soil Conditioner.png" alt="Soil Conditioner" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=font-size:64px;padding:40px>🌱</div>'"/>
       </div>
-      <div class="prod-pricing">
-        <div class="pr-row"><div class="pr-lbl">Retail<strong>1kg Sack</strong></div><div class="pr-val">Rp 6.500 <small>/kg</small></div></div>
-        <div class="pr-row"><div class="pr-lbl">Bulk Order<strong>≥ 500 kg</strong></div><div class="pr-val">Rp 5.500 <small>/kg</small></div></div>
-      </div>
-      <div class="prod-cta">
-        <a href="https://wa.me/6281387604358?text=Halo%20RadiaShell%2C%20saya%20tertarik%20Soil%20Conditioner." target="_blank" class="btn-primary" style="width:100%;justify-content:center;background:linear-gradient(135deg,#2e9e35,#4fcc56);">Order via WhatsApp</a>
+      <div class="prod-body">
+        <div class="prod-badge badge-soil">🌱 Soil Grade</div>
+        <div class="prod-name">Soil Conditioner</div>
+        <div class="prod-tagline">Pembenah tanah organik untuk menetralisir pH tanah masam dan meningkatkan ketersediaan nutrisi tanaman secara alami.</div>
+        <div class="prod-specs">
+          <div class="pspec">Ukuran granul: 2–6mm dust-free slow-release</div>
+          <div class="pspec">Kandungan CaCO₃/CaO untuk netralisir Al³⁺</div>
+          <div class="pspec">Sistem granulasi Pan Granulator otomatis</div>
+          <div class="pspec">CoA digital otomatis per batch produksi</div>
+        </div>
+        <div class="pricing-box">
+          <div class="pr-row"><div class="pr-lbl">Retail<strong>1kg Sack</strong></div><div class="pr-val">Rp 6.500 <small>/kg</small></div></div>
+          <div class="pr-row"><div class="pr-lbl">Bulk Order<strong>≥ 500 kg</strong></div><div class="pr-val">Rp 5.500 <small>/kg</small></div></div>
+        </div>
+        <a href="https://wa.me/6281387604358?text=Halo%20RadiaShell%2C%20saya%20tertarik%20Soil%20Conditioner." target="_blank" class="btn-primary btn-green" style="width:100%;justify-content:center;">Order via WhatsApp</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SELL -->
-<section id="sell">
-  <div class="sell-grid">
-    <div>
-      <div class="sec-lbl">Untuk Nelayan & Pengupas Kerang</div>
-      <div class="sec-title">Jual Limbah Cangkang Kerang ke Kami</div>
-      <div class="sec-sub">Ubah tumpukan cangkang yang memenuhi pesisir menjadi penghasilan tambahan. Kami datang ke lokasi Anda.</div>
-      <div class="sell-steps">
-        <div class="sell-step">
-          <div class="step-num">1</div>
-          <div class="step-content"><h4>Kumpulkan Cangkang</h4><p>Pisahkan cangkang dari sisa organik. Kami menerima kerang hijau, tiram, kerang darah, dan scallop.</p></div>
-        </div>
-        <div class="sell-step">
-          <div class="step-num">2</div>
-          <div class="step-content"><h4>Timbang & Quality Check</h4><p>Unit MAC kami dilengkapi load cell digital IoT. Timbangan otomatis, transparan, tercatat di sistem — tidak ada potongan tersembunyi.</p></div>
-        </div>
-        <div class="sell-step">
-          <div class="step-num">3</div>
-          <div class="step-content"><h4>Terima Pembayaran</h4><p>Pembayaran dihitung berdasarkan berat dan grade kualitas. Langsung di tempat setiap unit beroperasi.</p></div>
-        </div>
+<!-- PROCESS -->
+<section id="process">
+  <div class="sec-lbl" style="color:var(--teal-light)">Teknologi Kami</div>
+  <div class="sec-title" style="color:white">6 Tahap Proses RadiaShell</div>
+  <div class="sec-sub" style="color:rgba(255,255,255,.55)">Dari cangkang mentah hingga produk bersertifikat — semua dalam satu unit portabel 2m × 1.5m.</div>
+  <div class="proc-grid">
+    <div class="proc-card"><div class="proc-num">01</div><div class="proc-stage">Stage 1</div><div class="proc-name">Collection & Pre-Sorting</div><div class="proc-desc">Cangkang dikumpulkan dari nelayan. Setiap karung diberi label QR code untuk traceability digital dari sumber ke produk jadi.</div></div>
+    <div class="proc-card"><div class="proc-num">02</div><div class="proc-stage">Stage 2</div><div class="proc-name">Washing & Drying</div><div class="proc-desc">Dicuci dalam drum washer dengan agitasi mekanis. Kadar air diturunkan di bawah 5% sebelum masuk penggilingan.</div></div>
+    <div class="proc-card"><div class="proc-num">03</div><div class="proc-stage">Stage 3</div><div class="proc-name">Crushing & Fine Milling</div><div class="proc-desc">Hammer mill menghancurkan cangkang, digiling halus menghasilkan CaCO₃ powder 60–200 mesh via vibrating screen otomatis.</div></div>
+    <div class="proc-card"><div class="proc-num">04</div><div class="proc-stage">Stage 4 — Inti</div><div class="proc-name">Microwave-Assisted Calcination</div><div class="proc-desc">Kalsinasi menggunakan gelombang mikro 2.45 GHz — bukan bahan bakar fosil. Hemat energi 50% vs kiln, suhu terkontrol IoT hingga 900°C.</div></div>
+    <div class="proc-card"><div class="proc-num">05</div><div class="proc-stage">Stage 5</div><div class="proc-name">Post-Processing Dual Jalur</div><div class="proc-desc">Output otomatis dibagi dua: Bio-Calcium (blending Vit D3 → auto-packer 1kg pouch) dan Soil Conditioner (granulasi → sack bagger).</div></div>
+    <div class="proc-card"><div class="proc-num">06</div><div class="proc-stage">Stage 6</div><div class="proc-name">QC & CoA Generation</div><div class="proc-desc">Setiap batch menghasilkan Certificate of Analysis digital otomatis via ESP32 + cloud. Produk dilacak penuh via QR code.</div></div>
+  </div>
+  <div class="machine-box">
+    <div><div class="ms-val">2m × 1.5m</div><div class="ms-key">Dimensi Unit</div></div>
+    <div><div class="ms-val">10 kW</div><div class="ms-key">Daya Konsumsi</div></div>
+    <div><div class="ms-val">~50%</div><div class="ms-key">Efisiensi Energi</div></div>
+    <div><div class="ms-val">250 kg/hari</div><div class="ms-key">Kapasitas Bio-Calcium</div></div>
+    <div><div class="ms-val">200 kg/hari</div><div class="ms-key">Kapasitas Soil Conditioner</div></div>
+  </div>
+</section>
+
+<!-- IOT -->
+<section id="iot">
+  <div class="sec-lbl">IoT Integration</div>
+  <div class="sec-title">Real-Time Process Monitoring</div>
+  <div class="sec-sub">Sistem ESP32 + cloud memantau seluruh parameter produksi otomatis dan menghasilkan CoA digital per batch.</div>
+  <div class="iot-grid">
+    <div class="iot-card">
+      <div class="iot-lbl"><span class="live-dot"></span>MAC v1.0 · Unit RADIA-JKT-01</div>
+      <div class="metrics-grid">
+        <div class="metric-box"><div class="metric-val" id="m-temp">892°C</div><div class="metric-lbl">Drum Temp</div></div>
+        <div class="metric-box"><div class="metric-val" id="m-power">9.4 kW</div><div class="metric-lbl">Power Load</div></div>
+        <div class="metric-box"><div class="metric-val" id="m-output">45 kg/h</div><div class="metric-lbl">Output Flow</div></div>
+        <div class="metric-box"><div class="metric-val" id="m-eff">98.2%</div><div class="metric-lbl">Efficiency</div></div>
+      </div>
+      <span class="sim-badge">⚡ Simulated Demo — Prototype Dashboard</span>
+    </div>
+    <div class="iot-card">
+      <div class="iot-lbl">Produksi Harian — 7 Hari Terakhir</div>
+      <div class="chart-wrap"><canvas id="outputChart"></canvas></div>
+    </div>
+    <div class="iot-card">
+      <div class="iot-lbl">Batch Log Terbaru</div>
+      <div class="batch-list">
+        <div class="batch-item"><div><div class="batch-id">BATCH-2026-0312</div><div style="font-size:11px;color:var(--text3)">Bio-Calcium · 48.2 kg · QR: A3F9</div></div><span class="batch-st st-done">✓ CoA Ready</span></div>
+        <div class="batch-item"><div><div class="batch-id">BATCH-2026-0311</div><div style="font-size:11px;color:var(--text3)">Soil Conditioner · 62.1 kg · QR: B7D2</div></div><span class="batch-st st-done">✓ CoA Ready</span></div>
+        <div class="batch-item"><div><div class="batch-id">BATCH-2026-0310</div><div style="font-size:11px;color:var(--text3)">Bio-Calcium · 51.7 kg · QR: C2E8</div></div><span class="batch-st st-proc">⟳ Processing</span></div>
       </div>
     </div>
-    <div>
-      <div class="earn-card">
-        <h3>💰 Kalkulator Penghasilan</h3>
-        <p>Estimasi pendapatan Anda dari menjual cangkang kerang ke RadiaShell</p>
-        <div class="inp-group">
-          <label>Berat & kualitas cangkang yang dijual</label>
-          <div class="inp-row">
-            <input type="number" id="weight" placeholder="Berat (kg)" min="0" oninput="calc()"/>
-            <select id="grade" onchange="calc()">
-              <option value="600">Grade A · Kering (Rp 600/kg)</option>
-              <option value="450">Grade B · Agak basah (Rp 450/kg)</option>
-              <option value="300">Grade C · Basah (Rp 300/kg)</option>
-            </select>
-          </div>
-        </div>
-        <div class="result-box">
-          <div class="result-lbl">Estimasi Penghasilan Anda</div>
-          <div class="result-amt" id="result">Rp 0</div>
-          <div class="result-note" id="rnote">Masukkan berat untuk menghitung</div>
-        </div>
-        <div class="price-note">Harga beli: <strong>Grade A Rp 600/kg · Grade B Rp 450/kg · Grade C Rp 300/kg</strong></div>
-        <a href="https://wa.me/6281387604358?text=Halo%20RadiaShell%2C%20saya%20mau%20jual%20limbah%20cangkang%20kerang." target="_blank" class="btn-primary" style="width:100%;justify-content:center;margin-top:18px;">📱 Hubungi Koordinator Sekarang</a>
+    <div class="iot-card">
+      <div class="iot-lbl">Dampak Lingkungan Kumulatif</div>
+      <div class="metrics-grid">
+        <div class="metric-box"><div class="metric-val" style="color:var(--green-dark)">1.742t</div><div class="metric-lbl">CO₂ Dicegah</div></div>
+        <div class="metric-box"><div class="metric-val" style="color:var(--green-dark)">871t</div><div class="metric-lbl">Cangkang Terolah</div></div>
+        <div class="metric-box"><div class="metric-val" style="color:var(--amber)">30+</div><div class="metric-lbl">Green Jobs</div></div>
+        <div class="metric-box"><div class="metric-val" style="color:var(--amber)">3</div><div class="metric-lbl">Unit Aktif</div></div>
       </div>
+      <span class="sim-badge">📊 Proyeksi Tahun ke-5</span>
     </div>
+  </div>
+</section>
+
+<!-- PROOF -->
+<section id="proof">
+  <div style="text-align:center;margin-bottom:8px">
+    <div class="sec-lbl" style="color:rgba(255,255,255,.55)">Didukung Data Resmi</div>
+  </div>
+  <div class="proof-grid">
+    <div class="proof-card"><div class="proof-src">KKP · 2024</div><div class="proof-num">6,37 Jt</div><div class="proof-desc">Ton produksi budidaya nasional — menghasilkan jutaan ton limbah cangkang belum terkelola</div></div>
+    <div class="proof-card"><div class="proof-src">KLHK · 2023</div><div class="proof-num">48,3 Jt</div><div class="proof-desc">Hektare lahan terdegradasi akibat keasaman tanah — butuh solusi kalsium terjangkau</div></div>
+    <div class="proof-card"><div class="proof-src">Mordor Intelligence · 2025</div><div class="proof-num">USD 14,2M</div><div class="proof-desc">Proyeksi pasar pakan ternak Indonesia 2030 — permintaan kalsium bio-based tumbuh terus</div></div>
+    <div class="proof-card"><div class="proof-src">UNDP · 2023</div><div class="proof-num">4 Jt+</div><div class="proof-desc">Potensi green jobs baru Indonesia 2030 — ekonomi pesisir jadi sektor prioritas nasional</div></div>
   </div>
 </section>
 
@@ -487,20 +834,20 @@ footer p{font-size:13px;color:var(--text-muted)}
     <div class="sec-title">Mengapa Memilih RadiaShell?</div>
   </div>
   <div class="why-grid">
-    <div class="why-card"><div class="why-icon">📋</div><h4>CoA Digital Otomatis</h4><p>Setiap batch produk dilengkapi Certificate of Analysis yang digenerate otomatis oleh sistem IoT ESP32 — memenuhi standar pabrikan pakan besar nasional.</p></div>
-    <div class="why-card"><div class="why-icon">🔍</div><h4>Full QR Traceability</h4><p>Dari cangkang mentah hingga produk jadi — semua tercatat dan bisa dilacak via QR code. Transparansi penuh untuk buyer institusional dan ESG reporting.</p></div>
+    <div class="why-card"><div class="why-icon">📋</div><h4>CoA Digital Otomatis</h4><p>Setiap batch produk dilengkapi Certificate of Analysis yang digenerate otomatis oleh sistem IoT ESP32 — standar pabrikan pakan besar nasional.</p></div>
+    <div class="why-card"><div class="why-icon">🔍</div><h4>Full QR Traceability</h4><p>Dari cangkang mentah hingga produk jadi semua tercatat dan bisa dilacak via QR code. Transparansi penuh untuk buyer institusional dan ESG reporting.</p></div>
     <div class="why-card"><div class="why-icon">⚡</div><h4>MAC Hemat Energi</h4><p>Microwave-Assisted Calcination menggunakan gelombang mikro, bukan bahan bakar fosil. Konsumsi energi 50% lebih rendah vs kiln konvensional.</p></div>
     <div class="why-card"><div class="why-icon">📦</div><h4>Unit Portabel</h4><p>Mesin 2m × 1.5m dapat di-deploy langsung di lokasi limbah pesisir tanpa infrastruktur industri besar — efisiensi logistik maksimal.</p></div>
     <div class="why-card"><div class="why-icon">🌊</div><h4>Dampak Terukur</h4><p>Setiap ton cangkang yang diproses mengurangi risiko pencemaran logam berat Pb, Cd, Hg di ekosistem mangrove dan pesisir.</p></div>
-    <div class="why-card"><div class="why-icon">🤝</div><h4>Circular-Impact Partnership</h4><p>Model bisnis yang memberdayakan komunitas nelayan pesisir. Setiap mitra mendapat laporan dampak bulanan dan insentif loyalitas pasokan.</p></div>
+    <div class="why-card"><div class="why-icon">🤝</div><h4>Circular-Impact Partnership</h4><p>Model bisnis memberdayakan komunitas nelayan pesisir. Setiap mitra mendapat laporan dampak bulanan dan insentif loyalitas pasokan.</p></div>
   </div>
 </section>
 
 <!-- CONTACT -->
 <section id="contact">
   <div class="contact-inner">
-    <div class="sec-lbl">Hubungi Kami</div>
-    <div class="sec-title">Siap Berkolaborasi?</div>
+    <div class="sec-lbl" style="color:var(--teal-light)">Hubungi Kami</div>
+    <div class="sec-title" style="color:white">Siap Berkolaborasi?</div>
     <div class="sec-sub">Peternak, distributor pertanian, pemerintah daerah, atau nelayan yang ingin bermitra — kami terbuka untuk diskusi.</div>
     <div class="contact-opts">
       <a href="https://wa.me/6281387604358?text=Halo%20RadiaShell%2C%20saya%20tertarik%20untuk%20berkolaborasi." target="_blank" class="cbtn cwa">
@@ -512,7 +859,7 @@ footer p{font-size:13px;color:var(--text-muted)}
     <div class="contact-info">
       <div><div class="cd-lbl">WhatsApp</div><div class="cd-val">0813-8760-4358</div></div>
       <div><div class="cd-lbl">Lokasi</div><div class="cd-val">Cilincing, Jakarta Utara</div></div>
-      <div><div class="cd-lbl">Status</div><div class="cd-val" style="color:var(--teal-bright)">● Menerima Mitra Baru</div></div>
+      <div><div class="cd-lbl">Status</div><div class="cd-val" style="color:#5ecfdf">● Menerima Mitra Baru</div></div>
     </div>
   </div>
 </section>
@@ -521,30 +868,85 @@ footer p{font-size:13px;color:var(--text-muted)}
 <footer>
   <p>© 2026 RadiaShell. Smart Green Biorefinery Platform. Cilincing, Jakarta Utara.</p>
   <div class="footer-links">
+    <a href="#sell">Jual Limbah</a>
+    <a href="#products">Produk</a>
     <a href="#process">Proses</a>
     <a href="#iot">IoT Monitor</a>
-    <a href="#products">Produk</a>
-    <a href="#sell">Jual Limbah</a>
     <a href="#contact">Kontak</a>
   </div>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-// CALCULATOR
+// ── FLOATING BUBBLES ──
+(function(){
+  const wrap=document.getElementById('bubbles');
+  const emojis=['🐚','🌊','🌿','💧','🐟','🦪'];
+  for(let i=0;i<18;i++){
+    const b=document.createElement('div');
+    b.className='bubble';
+    const size=Math.random()*28+14;
+    b.style.cssText=[
+      'width:'+size+'px',
+      'height:'+size+'px',
+      'left:'+Math.random()*100+'%',
+      'animation-duration:'+(Math.random()*14+8)+'s',
+      'animation-delay:'+Math.random()*12+'s',
+      'font-size:'+(size*.7)+'px',
+      'display:flex',
+      'align-items:center',
+      'justify-content:center',
+      'background:rgba(26,143,160,0.06)',
+      'border:1px solid rgba(26,143,160,0.12)',
+    ].join(';');
+    b.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    wrap.appendChild(b);
+  }
+})();
+
+// ── CAROUSEL ──
+let cur=0;
+const total=5;
+const track=document.getElementById('carouselTrack');
+const dotsWrap=document.getElementById('carouselDots');
+
+// Build dots
+for(let i=0;i<total;i++){
+  const d=document.createElement('button');
+  d.className='cdot'+(i===0?' active':'');
+  d.onclick=(()=>{const idx=i;return()=>goTo(idx)})();
+  dotsWrap.appendChild(d);
+}
+
+function goTo(n){
+  cur=(n+total)%total;
+  track.style.transform='translateX(-'+cur*100+'%)';
+  document.querySelectorAll('.cdot').forEach((d,i)=>{
+    d.classList.toggle('active',i===cur);
+  });
+}
+function moveCarousel(dir){goTo(cur+dir)}
+
+// Auto-advance
+let autoTimer=setInterval(()=>goTo(cur+1),4000);
+document.querySelector('.shell-carousel').addEventListener('mouseenter',()=>clearInterval(autoTimer));
+document.querySelector('.shell-carousel').addEventListener('mouseleave',()=>{autoTimer=setInterval(()=>goTo(cur+1),4000)});
+
+// ── CALCULATOR ──
 function calc(){
   const w=parseFloat(document.getElementById('weight').value)||0;
   const p=parseInt(document.getElementById('grade').value);
-  document.getElementById('result').textContent=w<=0?'Rp 0':'Rp '+(w*p).toLocaleString('id-ID');
-  document.getElementById('rnote').textContent=w<=0?'Masukkan berat untuk menghitung':w.toLocaleString('id-ID')+' kg × Rp '+p.toLocaleString('id-ID')+'/kg';
+  const t=w*p;
+  document.getElementById('result').textContent=w<=0?'Rp 0':'Rp '+t.toLocaleString('id-ID');
+  document.getElementById('rnote').textContent=w<=0?'Masukkan berat\nuntuk menghitung':w.toLocaleString('id-ID')+' kg\n× Rp '+p.toLocaleString('id-ID')+'/kg';
 }
 
-// IOT LIVE SIMULATION
+// ── IOT SIMULATION ──
 const M=[
-  {id:'m-temp', base:892, range:14, unit:'°C',  dec:0},
-  {id:'m-power',base:9.4, range:.5, unit:' kW', dec:1},
-  {id:'m-output',base:45, range:5,  unit:' kg/h',dec:0},
-  {id:'m-eff',  base:98.2,range:.8, unit:'%',   dec:1},
+  {id:'m-temp', base:892,range:14,unit:'°C', dec:0},
+  {id:'m-power',base:9.4,range:.5, unit:' kW',dec:1},
+  {id:'m-output',base:45,range:5,  unit:' kg/h',dec:0},
+  {id:'m-eff',  base:98.2,range:.8,unit:'%',dec:1},
 ];
 setInterval(()=>{
   M.forEach(m=>{
@@ -553,31 +955,32 @@ setInterval(()=>{
   });
 },2500);
 
-// OUTPUT CHART
+// ── CHART ──
 const bcBase=[42,48,45,51,47,53,49];
 const scBase=[38,41,44,40,46,42,45];
-const chart=new Chart(document.getElementById('outputChart').getContext('2d'),{
+const chartCtx=document.getElementById('outputChart').getContext('2d');
+const myChart=new Chart(chartCtx,{
   type:'bar',
   data:{
     labels:['Sen','Sel','Rab','Kam','Jum','Sab','Min'],
     datasets:[
-      {label:'Bio-Calcium (kg)',data:[...bcBase],backgroundColor:'rgba(42,180,204,0.68)',borderColor:'rgba(42,180,204,1)',borderWidth:1,borderRadius:4},
-      {label:'Soil Conditioner (kg)',data:[...scBase],backgroundColor:'rgba(79,204,86,0.5)',borderColor:'rgba(79,204,86,.9)',borderWidth:1,borderRadius:4}
+      {label:'Bio-Calcium (kg)',data:[...bcBase],backgroundColor:'rgba(26,143,160,0.65)',borderColor:'rgba(26,143,160,1)',borderWidth:1,borderRadius:4},
+      {label:'Soil Conditioner (kg)',data:[...scBase],backgroundColor:'rgba(46,204,113,0.5)',borderColor:'rgba(46,204,113,.9)',borderWidth:1,borderRadius:4}
     ]
   },
   options:{
     responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{labels:{color:'#9ecdd8',font:{size:11},boxWidth:10,padding:10}}},
+    plugins:{legend:{labels:{color:'#4a6070',font:{size:11},boxWidth:10,padding:10}}},
     scales:{
-      x:{ticks:{color:'#5a8f9a',font:{size:11}},grid:{color:'rgba(42,180,204,0.07)'}},
-      y:{ticks:{color:'#5a8f9a',font:{size:11}},grid:{color:'rgba(42,180,204,0.07)'}}
+      x:{ticks:{color:'#7a9aaa',font:{size:11}},grid:{color:'rgba(26,143,160,0.07)'}},
+      y:{ticks:{color:'#7a9aaa',font:{size:11}},grid:{color:'rgba(26,143,160,0.07)'}}
     }
   }
 });
 setInterval(()=>{
-  chart.data.datasets[0].data=bcBase.map(v=>v+Math.round((Math.random()-.5)*6));
-  chart.data.datasets[1].data=scBase.map(v=>v+Math.round((Math.random()-.5)*6));
-  chart.update('none');
+  myChart.data.datasets[0].data=bcBase.map(v=>v+Math.round((Math.random()-.5)*6));
+  myChart.data.datasets[1].data=scBase.map(v=>v+Math.round((Math.random()-.5)*6));
+  myChart.update('none');
 },3200);
 </script>
 </body>
